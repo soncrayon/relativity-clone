@@ -1,51 +1,51 @@
-import { StrictMode, Suspense } from 'react';
-import { createRoot } from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router';
-import { Provider } from '@/components/ui/provider';
-import { Center, Spinner } from '@chakra-ui/react';
-import './index.css';
+import { StrictMode, Suspense } from "react";
+import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router";
+import { Provider } from "@/components/ui/provider";
+import { Center, Spinner } from "@chakra-ui/react";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     lazy: async () => {
-      const { default: Component } = await import('./Layout');
+      const { default: Component } = await import("./Layout");
       return { Component };
     },
     children: [
       {
         index: true,
         lazy: async () => {
-          const { default: Component } = await import('./components/Home');
+          const { default: Component } = await import("./components/Home");
           return { Component };
         },
       },
       {
-        path: 'workspaces',
+        path: "workspaces",
         lazy: async () => {
           const [{ default: Component }, { loader }] = await Promise.all([
-            import('./components/Workspaces'),
-            import('./loaders/workspaces'),
+            import("./components/Workspaces"),
+            import("./loaders/workspaces"),
           ]);
           return { Component, loader };
         },
       },
       {
-        path: 'users',
+        path: "users",
         lazy: async () => {
           const [{ default: Component }, { loader }] = await Promise.all([
-            import('./components/Users'),
-            import('./loaders/users'),
+            import("./components/Users"),
+            import("./loaders/users"),
           ]);
           return { Component, loader };
         },
       },
       {
-        path: 'groups',
+        path: "groups",
         lazy: async () => {
           const [{ default: Component }, { loader }] = await Promise.all([
-            import('./components/Groups'),
-            import('./loaders/groups'),
+            import("./components/Groups"),
+            import("./loaders/groups"),
           ]);
           return { Component, loader };
         },
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider>
       <Suspense

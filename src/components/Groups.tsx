@@ -1,14 +1,15 @@
-
-import { useLoaderData } from 'react-router';
-import { Box, Heading, Table } from '@chakra-ui/react';
-import type { Group } from '@/data/groups';
+import { useLoaderData } from "react-router";
+import { Box, Heading, Table } from "@chakra-ui/react";
+import type { Group } from "@/data/groups";
 
 export default function Groups() {
   const { groups } = useLoaderData() as { groups: Group[] };
 
   return (
     <Box>
-      <Heading size="xl" mb="6">Groups</Heading>
+      <Heading size="xl" mb="6">
+        Groups
+      </Heading>
       <Table.Root size="md" variant="outline">
         <Table.Header>
           <Table.Row>

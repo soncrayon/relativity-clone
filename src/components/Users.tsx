@@ -1,14 +1,15 @@
-
-import { useLoaderData } from 'react-router';
-import { Box, Heading, Table } from '@chakra-ui/react';
-import type { User } from '@/data/users';
+import { useLoaderData } from "react-router";
+import { Box, Heading, Table } from "@chakra-ui/react";
+import type { User } from "@/data/users";
 
 export default function Users() {
   const { users } = useLoaderData() as { users: User[] };
 
   return (
     <Box>
-      <Heading size="xl" mb="6">Users</Heading>
+      <Heading size="xl" mb="6">
+        Users
+      </Heading>
       <Table.Root size="md" variant="outline">
         <Table.Header>
           <Table.Row>

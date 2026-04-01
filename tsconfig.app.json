@@ -8,7 +8,7 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "allowSyntheticDefaultImports": true,
@@ -17,7 +17,6 @@
     "jsx": "react-jsx",
 
     /* Path aliases */
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },

@@ -1,14 +1,15 @@
-
-import { useLoaderData } from 'react-router';
-import { Box, Heading, Table } from '@chakra-ui/react';
-import type { Workspace } from '@/data/workspaces';
+import { useLoaderData } from "react-router";
+import { Box, Heading, Table } from "@chakra-ui/react";
+import type { Workspace } from "@/data/workspaces";
 
 export default function Workspaces() {
   const { workspaces } = useLoaderData() as { workspaces: Workspace[] };
 
   return (
     <Box>
-      <Heading size="xl" mb="6">Workspaces</Heading>
+      <Heading size="xl" mb="6">
+        Workspaces
+      </Heading>
       <Table.Root size="md" variant="outline">
         <Table.Header>
           <Table.Row>
