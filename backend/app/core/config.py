@@ -1,4 +1,11 @@
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# Resolve the .env path relative to this file, not the working directory.
+# This means `uv run alembic ...` and `uv run uvicorn ...` both find .env
+# regardless of which directory they're run from.
+_ENV_FILE = Path(__file__).parent.parent.parent / ".env"
 
 
 class Settings(BaseSettings):
@@ -17,13 +24,17 @@ class Settings(BaseSettings):
     # PostgreSQL connection string — set this in your .env file
     database_url: str = "postgresql://localhost/relativity"
 
-    # Which frontend origins are allowed to call this API.
-    # FastAPI's CORS middleware rejects requests from any origin not in this list.
-    cors_origins: list[str] = ["http://localhost:9000"]
+    # Comma-separated list of allowed frontend origins for CORS.
+    # Stored as a plain string in .env and split at runtime to avoid JSON
+    # parsing issues with list values in .env files.
+    cors_origins_str: str = "http://localhost:9000"
+
+    @property
+    def cors_origins(self) -> list[str]:
+        return [origin.strip() for origin in self.cors_origins_str.split(",")]
 
     model_config = SettingsConfigDict(
-        # Load .env from the backend/ directory (one level up from app/)
-        env_file="../.env",
+        env_file=str(_ENV_FILE),
         env_file_encoding="utf-8",
     )
 
