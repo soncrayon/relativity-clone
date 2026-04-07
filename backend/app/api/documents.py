@@ -21,8 +21,8 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.models.document import Document, ProcessingStatus
-from app.services import ingestion, storage
+from app.models.document import Document, DocumentChunk, ProcessingStatus
+from app.services import chunking, ingestion, storage
 
 router = APIRouter(
     prefix="/workspaces/{workspace_id}/documents",
@@ -183,3 +183,58 @@ def process_batch(
             results["failed"].append({"id": doc_id, "error": doc.processing_error})
 
     return results
+
+
+@router.post("/{doc_id}/chunk")
+def chunk_document(
+    workspace_id: int,
+    doc_id: int,
+    db: Session = Depends(get_db),
+):
+    """
+    Split a document's extracted text into chunks and store them in the
+    document_chunks table. Requires the document to already be processed
+    (status=complete). Replaces any existing chunks so it is safe to call
+    multiple times.
+
+    This is the step that prepares documents for the RAG pipeline —
+    each chunk will later get an embedding and be stored in ChromaDB.
+    """
+    doc = (
+        db.query(Document)
+        .filter(Document.id == doc_id, Document.workspace_id == workspace_id)
+        .first()
+    )
+    if not doc:
+        raise HTTPException(status_code=404, detail="Document not found.")
+    if doc.processing_status != ProcessingStatus.complete:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Document must be processed before chunking (current status: {doc.processing_status}).",
+        )
+    if not doc.content:
+        raise HTTPException(status_code=422, detail="Document has no extracted text to chunk.")
+
+    # Delete existing chunks so re-chunking is safe to call more than once
+    db.query(DocumentChunk).filter(DocumentChunk.document_id == doc_id).delete()
+
+    chunks = chunking.split_text(doc.content)
+
+    for chunk in chunks:
+        db.add(
+            DocumentChunk(
+                document_id=doc_id,
+                chunk_index=chunk.index,
+                content=chunk.content,
+                token_count=chunk.token_count,
+            )
+        )
+
+    db.commit()
+
+    return {
+        "id": doc.id,
+        "filename": doc.filename,
+        "chunk_count": len(chunks),
+        "total_tokens": sum(c.token_count for c in chunks),
+    }
