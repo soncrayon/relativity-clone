@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.documents import router as documents_router
 from app.core.config import settings
 
 
@@ -53,3 +54,6 @@ def health_check():
     backend is up before making real requests.
     """
     return {"status": "ok", "app": settings.app_name}
+
+
+app.include_router(documents_router)

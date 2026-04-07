@@ -18,6 +18,8 @@ dependencies = [
   "pydantic-settings>=2.7.0",
   # Required for FastAPI to handle file uploads (multipart/form-data)
   "python-multipart>=0.0.12",
+  "pdfminer-six>=20221105",
+  "python-docx>=1.1.0",
 ]
 
 [dependency-groups]
