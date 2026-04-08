@@ -25,10 +25,10 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@vitejs/plugin-react": "^5.2.0",
+    "@vitejs/plugin-react": "^6.0.1",
     "typescript": "~5.8.3",
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",
-    "vite-plus": "latest"
+    "vite-plus": "^0.1.16"
   },
   "overrides": {
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",

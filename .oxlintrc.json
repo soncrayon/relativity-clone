@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "@/lib/api-client",
+            "message": "Import from src/api/*.ts instead — see bulletproof-react API layer conventions."
+          }
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/api/**"],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ]
+}

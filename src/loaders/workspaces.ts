@@ -1,5 +1,6 @@
-import { workspaces } from "@/data/workspaces";
+import { getWorkspaces } from "@/api/workspaces";
 
-export async function loader() {
+export const loader = async () => {
+  const workspaces = await getWorkspaces();
   return { workspaces };
-}
+};

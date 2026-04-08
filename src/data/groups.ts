@@ -1,23 +1,7 @@
 export interface Group {
-  id: string;
+  id: number;
   name: string;
-  description: string;
+  description: string | null;
+  member_count: number;
+  created_at: string;
 }
-
-export const groups: Group[] = [
-  {
-    id: "201",
-    name: "Admins",
-    description: "Users with administrative privileges.",
-  },
-  {
-    id: "202",
-    name: "Developers",
-    description: "Users involved in software development.",
-  },
-  {
-    id: "203",
-    name: "Guests",
-    description: "Temporary users with limited access.",
-  },
-];

@@ -1,5 +1,6 @@
-import { groups } from "@/data/groups";
+import { getGroups } from "@/api/groups";
 
-export async function loader() {
+export const loader = async () => {
+  const groups = await getGroups();
   return { groups };
-}
+};

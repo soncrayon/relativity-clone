@@ -1,5 +1,6 @@
-import { users } from "@/data/users";
+import { getUsers } from "@/api/users";
 
-export async function loader() {
+export const loader = async () => {
+  const users = await getUsers();
   return { users };
-}
+};
