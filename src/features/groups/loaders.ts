@@ -1,4 +1,4 @@
-import { getGroups } from "@/api/groups";
+import { getGroups } from "@/features/groups/api/groups";
 
 export const loader = async () => {
   const groups = await getGroups();

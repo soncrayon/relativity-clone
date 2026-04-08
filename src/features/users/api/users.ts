@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api-client";
-import type { User } from "@/data/users";
+import type { User } from "@/features/users/types";
 
 export const getUsers = (): Promise<User[]> => apiClient.get<User[]>("/users/");
 

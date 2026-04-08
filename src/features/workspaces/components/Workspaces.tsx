@@ -1,14 +1,14 @@
 import { useLoaderData } from "react-router";
 import { Box, Heading, Table } from "@chakra-ui/react";
-import type { Group } from "@/data/groups";
+import type { Workspace } from "@/features/workspaces/types";
 
-export default function Groups() {
-  const { groups } = useLoaderData() as { groups: Group[] };
+export default function Workspaces() {
+  const { workspaces } = useLoaderData() as { workspaces: Workspace[] };
 
   return (
     <Box>
       <Heading size="xl" mb="6">
-        Groups
+        Workspaces
       </Heading>
       <Table.Root size="md" variant="outline">
         <Table.Header>
@@ -19,11 +19,11 @@ export default function Groups() {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {groups.map((group) => (
-            <Table.Row key={group.id}>
-              <Table.Cell>{group.id}</Table.Cell>
-              <Table.Cell>{group.name}</Table.Cell>
-              <Table.Cell>{group.description}</Table.Cell>
+          {workspaces.map((ws) => (
+            <Table.Row key={ws.id}>
+              <Table.Cell>{ws.id}</Table.Cell>
+              <Table.Cell>{ws.name}</Table.Cell>
+              <Table.Cell>{ws.description}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

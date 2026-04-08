@@ -1,4 +1,4 @@
-import { getWorkspaces } from "@/api/workspaces";
+import { getWorkspaces } from "@/features/workspaces/api/workspaces";
 
 export const loader = async () => {
   const workspaces = await getWorkspaces();

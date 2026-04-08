@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api-client";
-import type { Workspace } from "@/data/workspaces";
+import type { Workspace } from "@/features/workspaces/types";
 
 export const getWorkspaces = (): Promise<Workspace[]> => apiClient.get<Workspace[]>("/workspaces/");
 

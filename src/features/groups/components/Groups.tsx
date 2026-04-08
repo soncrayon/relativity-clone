@@ -1,29 +1,29 @@
 import { useLoaderData } from "react-router";
 import { Box, Heading, Table } from "@chakra-ui/react";
-import type { User } from "@/data/users";
+import type { Group } from "@/features/groups/types";
 
-export default function Users() {
-  const { users } = useLoaderData() as { users: User[] };
+export default function Groups() {
+  const { groups } = useLoaderData() as { groups: Group[] };
 
   return (
     <Box>
       <Heading size="xl" mb="6">
-        Users
+        Groups
       </Heading>
       <Table.Root size="md" variant="outline">
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader>ID</Table.ColumnHeader>
             <Table.ColumnHeader>Name</Table.ColumnHeader>
-            <Table.ColumnHeader>Email</Table.ColumnHeader>
+            <Table.ColumnHeader>Description</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {users.map((user) => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.id}</Table.Cell>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
+          {groups.map((group) => (
+            <Table.Row key={group.id}>
+              <Table.Cell>{group.id}</Table.Cell>
+              <Table.Cell>{group.name}</Table.Cell>
+              <Table.Cell>{group.description}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

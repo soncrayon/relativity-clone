@@ -15,7 +15,7 @@
   },
   "overrides": [
     {
-      "files": ["src/api/**"],
+      "files": ["src/features/**/api/**"],
       "rules": {
         "no-restricted-imports": "off"
       }
