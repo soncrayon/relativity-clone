@@ -38,12 +38,13 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS middleware lets the React frontend (http://localhost:9000) call this API.
+# CORS middleware lets the React frontend call this API.
 # Without this, browsers block cross-origin requests as a security measure.
+# In debug mode we allow all origins so the Vite dev server can run on any port.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
-    allow_credentials=True,
+    allow_origins=["*"] if settings.debug else settings.cors_origins,
+    allow_credentials=not settings.debug,
     allow_methods=["*"],
     allow_headers=["*"],
 )

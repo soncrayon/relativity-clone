@@ -5,7 +5,7 @@ description = "RAG-powered legal AI platform backend"
 requires-python = ">=3.10"
 dependencies = [
   # The web framework — handles HTTP routing, request/response, validation
-  "fastapi>=0.115.0",
+  "fastapi[standard]>=0.115.0",
   # The server that actually runs FastAPI (like Vite's dev server, but for Python)
   "uvicorn[standard]>=0.32.0",
   # ORM — lets us write Python classes instead of raw SQL to define/query tables
