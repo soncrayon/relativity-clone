@@ -1,5 +1,6 @@
 import { useLoaderData } from "react-router";
-import { Box, Heading, Table } from "@chakra-ui/react";
+import { Link } from "react-router";
+import { Box, Heading, Table, Button } from "@chakra-ui/react";
 import type { Workspace } from "@/features/workspaces/types";
 
 export default function Workspaces() {
@@ -16,6 +17,7 @@ export default function Workspaces() {
             <Table.ColumnHeader>ID</Table.ColumnHeader>
             <Table.ColumnHeader>Name</Table.ColumnHeader>
             <Table.ColumnHeader>Description</Table.ColumnHeader>
+            <Table.ColumnHeader></Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -24,6 +26,11 @@ export default function Workspaces() {
               <Table.Cell>{ws.id}</Table.Cell>
               <Table.Cell>{ws.name}</Table.Cell>
               <Table.Cell>{ws.description}</Table.Cell>
+              <Table.Cell>
+                <Button asChild size="xs" variant="outline">
+                  <Link to={`/workspaces/${ws.id}/documents`}>Documents →</Link>
+                </Button>
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

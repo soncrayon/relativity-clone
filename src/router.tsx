@@ -47,6 +47,16 @@ export const router = createBrowserRouter([
           return { Component, loader };
         },
       },
+      {
+        path: "workspaces/:workspaceId/documents",
+        lazy: async () => {
+          const [{ default: Component }, { loader }] = await Promise.all([
+            import("@/features/documents/components/Documents"),
+            import("@/features/documents/loaders"),
+          ]);
+          return { Component, loader };
+        },
+      },
     ],
   },
 ]);
