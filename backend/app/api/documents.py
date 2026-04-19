@@ -22,7 +22,7 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.models.document import Document, DocumentChunk, ProcessingStatus
-from app.services import chunking, ingestion, storage
+from app.services import chunking, ingestion, storage, vector_store
 
 router = APIRouter(
     prefix="/workspaces/{workspace_id}/documents",
@@ -152,6 +152,37 @@ class BatchProcessRequest(BaseModel):
     document_ids: list[int]
 
 
+@router.get("/search")
+def search_documents(
+    workspace_id: int,
+    q: str,
+    n: int = 5,
+    db: Session = Depends(get_db),
+):
+    """
+    Semantic search across all indexed chunks in a workspace.
+    Returns the n most relevant chunks for the query string, enriched with
+    the source document filename.
+
+    Requires documents to have been chunked (POST /{doc_id}/chunk) — only
+    chunks that have been embedded and stored in ChromaDB will appear here.
+    """
+    results = vector_store.query(q, workspace_id=workspace_id, n_results=n)
+
+    # Enrich each result with the source document filename so the frontend
+    # can display "from Deposition_Smith.pdf" without a second request.
+    doc_cache: dict[int, Document] = {}
+    for result in results:
+        doc_id = result["document_id"]
+        if doc_id not in doc_cache:
+            doc = db.query(Document).filter(Document.id == doc_id).first()
+            doc_cache[doc_id] = doc
+        doc = doc_cache[doc_id]
+        result["filename"] = doc.filename if doc else None
+
+    return results
+
+
 @router.post("/process-batch")
 def process_batch(
     workspace_id: int,
@@ -215,20 +246,30 @@ def chunk_document(
     if not doc.content:
         raise HTTPException(status_code=422, detail="Document has no extracted text to chunk.")
 
-    # Delete existing chunks so re-chunking is safe to call more than once
+    # Purge existing Postgres rows and ChromaDB vectors so re-chunking is safe.
+    # ChromaDB delete must happen before the DB delete — both use doc_id.
+    vector_store.delete_document_chunks(doc_id)
     db.query(DocumentChunk).filter(DocumentChunk.document_id == doc_id).delete()
 
     chunks = chunking.split_text(doc.content)
 
+    # Build ORM objects first so we can attach embedding_ids after the upsert.
+    db_chunks = []
     for chunk in chunks:
-        db.add(
-            DocumentChunk(
-                document_id=doc_id,
-                chunk_index=chunk.index,
-                content=chunk.content,
-                token_count=chunk.token_count,
-            )
+        db_chunk = DocumentChunk(
+            document_id=doc_id,
+            chunk_index=chunk.index,
+            content=chunk.content,
+            token_count=chunk.token_count,
         )
+        db.add(db_chunk)
+        db_chunks.append(db_chunk)
+
+    # Embed and store in ChromaDB. Returns deterministic IDs — no DB flush needed.
+    embedding_ids = vector_store.upsert_chunks(doc_id, doc.workspace_id, chunks)
+
+    for db_chunk, emb_id in zip(db_chunks, embedding_ids):
+        db_chunk.embedding_id = emb_id
 
     db.commit()
 

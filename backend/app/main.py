@@ -8,6 +8,7 @@ from app.api.groups import router as groups_router
 from app.api.users import router as users_router
 from app.api.workspaces import router as workspaces_router
 from app.core.config import settings
+from app.services import vector_store
 
 
 @asynccontextmanager
@@ -17,14 +18,13 @@ async def lifespan(app: FastAPI):
 
     The code BEFORE `yield` runs when the server starts.
     The code AFTER `yield` runs when the server shuts down.
-
-    For now this is a placeholder. In later phases we'll add:
-    - Database connection pool setup
-    - ChromaDB client initialization
-    - Embedding model loading
     """
     # --- startup ---
     print(f"Starting {settings.app_name} (debug={settings.debug})")
+    # Load the sentence-transformers embedding model and connect to ChromaDB.
+    # Runs synchronously here because startup blocking is acceptable — it only
+    # happens once and prevents the first request from paying the load cost.
+    vector_store.init()
     yield
     # --- shutdown ---
     print("Shutting down")

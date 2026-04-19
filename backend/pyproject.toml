@@ -2,7 +2,7 @@
 name = "relativity-backend"
 version = "0.1.0"
 description = "RAG-powered legal AI platform backend"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
   # The web framework — handles HTTP routing, request/response, validation
   "fastapi[standard]>=0.115.0",
@@ -21,6 +21,14 @@ dependencies = [
   "pdfminer-six>=20221105",
   "python-docx>=1.1.0",
   "email-validator>=2.0.0",
+  # Vector store for RAG pipeline — stores and searches document chunk embeddings
+  "chromadb>=0.4.22,<=0.4.24",
+  # Converts text to embedding vectors — all-MiniLM-L6-v2 runs fully local, no API key
+  "sentence-transformers>=2.6.0,<3.0.0",
+  # Intel Mac (x86_64) compatibility pins: onnxruntime 1.19+ and torch 2.5+ dropped
+  # Intel Mac wheels. These pins ensure uv resolves to versions with x86_64 support.
+  "onnxruntime>=1.14.0,<1.19.0",
+  "torch<2.3.0",
 ]
 
 [dependency-groups]
@@ -35,3 +43,8 @@ dev = [
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+
+[tool.uv]
+# Ensures uv resolves wheels compatible with Intel Mac (x86_64).
+# Without this, uv may select package versions that only have arm64/linux wheels.
+required-environments = ["sys_platform == 'darwin' and platform_machine == 'x86_64'"]
