@@ -29,6 +29,21 @@ class Settings(BaseSettings):
     # parsing issues with list values in .env files.
     cors_origins_str: str = "http://localhost:9000"
 
+    # ── LLM provider settings ──────────────────────────────────────────────────
+    # Which provider to use: "ollama", "gemini", "claude", "openai"
+    llm_provider: str = "ollama"
+
+    # Ollama — runs locally, no API key needed.
+    # Default model is llama3.2 (3B, fast) but any model pulled via `ollama pull`
+    # works. The base URL matches Ollama's default local server port.
+    ollama_base_url: str = "http://localhost:11434"
+    ollama_model: str = "llama3.2"
+
+    # API keys for cloud providers — leave blank if not using that provider.
+    gemini_api_key: str = ""
+    claude_api_key: str = ""
+    openai_api_key: str = ""
+
     @property
     def cors_origins(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins_str.split(",")]
