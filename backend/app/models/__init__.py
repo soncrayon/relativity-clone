@@ -3,6 +3,7 @@
 # This is equivalent to a barrel file (index.ts) in the frontend.
 from app.models.audit import AuditLog
 from app.models.base import Base
+from app.models.chat import ChatMessage, MessageRole
 from app.models.document import Document, DocumentChunk
 from app.models.group import Group, user_groups
 from app.models.user import User, UserRole
@@ -18,4 +19,6 @@ __all__ = [
     "Document",
     "DocumentChunk",
     "AuditLog",
+    "ChatMessage",
+    "MessageRole",
 ]
