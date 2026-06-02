@@ -1,0 +1,21 @@
+id,question,expected_answer,expected_source_doc,difficulty
+1,"What documents mention the contract termination date?","<fill in: e.g. The MSA dated Jan 15 2022 states termination requires 30 days written notice>","<fill in: e.g. MSA_2022.pdf>",easy
+2,"Who sent emails about the merger in Q3 2022?","<fill in: e.g. Emails from J.Smith and R.Jones discuss the merger in July and August 2022>","<fill in: e.g. merger_comms.eml>",medium
+3,"What were the key terms of the licensing agreement?","<fill in>","<fill in>",medium
+4,"Which documents reference the non-disclosure agreement?","<fill in>","<fill in>",easy
+5,"What did the CEO say about the acquisition in internal communications?","<fill in>","<fill in>",medium
+6,"Are there any documents mentioning a breach of contract?","<fill in>","<fill in>",easy
+7,"What financial figures are mentioned in the board meeting minutes?","<fill in>","<fill in>",medium
+8,"Which employees were copied on emails about the settlement?","<fill in>","<fill in>",medium
+9,"What is the effective date of the employment agreement?","<fill in>","<fill in>",easy
+10,"Are there documents discussing the regulatory compliance review?","<fill in>","<fill in>",easy
+11,"What did legal counsel advise about the liability exposure?","<fill in>","<fill in>",medium
+12,"Which documents were created after the lawsuit was filed?","<fill in>","<fill in>",medium
+13,"What are the payment terms mentioned across all contracts?","<fill in>","<fill in>",medium
+14,"Is there any mention of the whistleblower complaint?","<fill in>","<fill in>",medium
+15,"What documents reference Project Falcon?","<fill in>","<fill in>",easy
+16,"Who had access to the confidential pricing spreadsheet?","<fill in>","<fill in>",hard
+17,"What did the audit report conclude about financial controls?","<fill in>","<fill in>",hard
+18,"Are there communications between outside counsel and the CFO?","<fill in>","<fill in>",hard
+19,"What indemnification clauses appear in the vendor contracts?","<fill in>","<fill in>",hard
+20,"Which documents mention both the plaintiff's name and damages?","<fill in>","<fill in>",hard
